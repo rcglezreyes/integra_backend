@@ -79,6 +79,14 @@ func (um *userModel) UpdateUser(user *entity.UserEntity, user_id int64) (*entity
 		err = errors.New("email in use")
 		return nil, err
 	}
+	users, err = um.getUserById(user_id)
+	if err != nil {
+		return nil, err
+	}
+	if len(users) == 0 {
+		err = errors.New("user does not exist")
+		return nil, err
+	}
 	stmt, err := db.Prepare("UPDATE users SET user_name = $1, first_name = $2, last_name = $3, email = $4, user_status = $5, department = $6 WHERE user_id = $7 RETURNING user_id")
 
 	if err != nil {

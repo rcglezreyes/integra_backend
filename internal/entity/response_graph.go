@@ -1,4 +1,4 @@
-package responsegraph
+package entity
 
 type ResponseGeneric struct {
 	Status  string      `json:"status"`

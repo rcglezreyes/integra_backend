@@ -2,6 +2,7 @@ package app
 
 import (
 	"integra_backend/internal/controller"
+	"integra_backend/internal/message"
 	"net/http"
 
 	_ "integra_backend/internal/docs"
@@ -42,7 +43,7 @@ func (a *app) ConfigRoutes(e *echo.Echo) {
 	// Routes
 	e.POST("/user", a.CreateUser)
 	e.GET("/users", a.ListUsers)
-	e.POST("/update_user/:user_id", a.UpdateUser)
+	e.PUT("/update_user/:user_id", a.UpdateUser)
 	e.DELETE("/delete_user/:user_id", a.DeleteUser)
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 
@@ -63,7 +64,7 @@ func (a *app) CreateUser(c echo.Context) error {
 		return err
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"data": "Server is up and running",
+		"data": message.MsgResponseUserCreatedSuccess,
 	})
 }
 
@@ -80,7 +81,7 @@ func (a *app) ListUsers(c echo.Context) error {
 		return err
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"data": "Server is up and running",
+		"data": message.MsgResponseUserListedSuccess,
 	})
 }
 
@@ -93,14 +94,14 @@ func (a *app) ListUsers(c echo.Context) error {
 // @Param user_id path int true "USER ID"
 // @Param parameters body entity.UserEntity true "ENTRY PAYLOAD"
 // @Success 200 {object} map[string]interface{}
-// @Router /update_user/{user_id} [post]
+// @Router /update_user/{user_id} [put]
 func (a *app) UpdateUser(c echo.Context) error {
 	err := a.controller.UpdateUser(c)
 	if err != nil {
 		return err
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"data": "Server is up and running",
+		"data": message.MsgResponseUserUpdatedSuccess,
 	})
 }
 
@@ -118,6 +119,6 @@ func (a *app) DeleteUser(c echo.Context) error {
 		return err
 	}
 	return c.JSON(http.StatusOK, map[string]interface{}{
-		"data": "Server is up and running",
+		"data": message.MsgResponseUserDeletedSuccess,
 	})
 }

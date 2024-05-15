@@ -55,7 +55,7 @@ const docTemplate = `{
             }
         },
         "/update_user/{user_id}": {
-            "post": {
+            "put": {
                 "description": "Updates an existing user.",
                 "consumes": [
                     "application/json"

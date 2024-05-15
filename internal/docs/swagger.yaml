@@ -56,7 +56,7 @@ paths:
       tags:
       - User
   /update_user/{user_id}:
-    post:
+    put:
       consumes:
       - application/json
       description: Updates an existing user.

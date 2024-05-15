@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"integra_backend/internal/entity"
+	"integra_backend/internal/message"
 	"integra_backend/internal/model"
 	"integra_backend/internal/utils"
 	"net/http"
@@ -30,8 +31,8 @@ func NewUserController(userModel model.UserModel) UserController {
 
 func (uc *userController) CreateUser(c echo.Context) error {
 	user := entity.UserEntity{}
-	customMsg := "error bind data"
-	component := "[UserController.CreateUser]"
+	customMsg := message.MsgResponseBindDataError
+	component := message.MsgComponentCreateUserController
 	//Binding new user
 	err := c.Bind(&user)
 	if err != nil {
@@ -45,16 +46,16 @@ func (uc *userController) CreateUser(c echo.Context) error {
 	//Creating user
 	pgUser, err := uc.userModel.CreateUser(&user)
 	if err != nil {
-		customMsg = "error to insert data in Postgres DB"
-		component = "[UserModel.CreateUser]"
+		customMsg = message.MsgResponseInsertDataPgDatabaseError
+		component = message.MsgComponentCreateUserModel
 		return uc.handleError(c, component, customMsg, err)
 	}
 	return utils.HandleSuccess(c, pgUser)
 }
 
 func (uc *userController) ListUsers(c echo.Context) error {
-	customMsg := "error to list data in Postgres DB"
-	component := "[UserModel.ListUsers]"
+	customMsg := message.MsgResponseListDataPgDatabaseError
+	component := message.MsgComponentListUserModel
 	pgUsers, err := uc.userModel.ListUsers()
 	if err != nil {
 		return uc.handleError(c, component, customMsg, err)
@@ -64,8 +65,8 @@ func (uc *userController) ListUsers(c echo.Context) error {
 
 func (uc *userController) UpdateUser(c echo.Context) error {
 	user := entity.UserEntity{}
-	customMsg := "error bind data"
-	component := "[UserController.UpdateUser]"
+	customMsg := message.MsgResponseBindDataError
+	component := message.MsgComponentUpdateUserController
 	//Binding new user
 	err := c.Bind(&user)
 	if err != nil {
@@ -84,8 +85,8 @@ func (uc *userController) UpdateUser(c echo.Context) error {
 	user_id := int64(id)
 	pgUser, err := uc.userModel.UpdateUser(&user, user_id)
 	if err != nil {
-		customMsg = "error to update data in Postgres DB"
-		component = "[UserModel.UpdateUser]"
+		customMsg = message.MsgResponseUpdateDataPgDatabaseError
+		component = message.MsgComponentUpdateUserModel
 		return uc.handleError(c, component, customMsg, err)
 	}
 	return utils.HandleSuccess(c, pgUser)
@@ -93,8 +94,8 @@ func (uc *userController) UpdateUser(c echo.Context) error {
 
 func (uc *userController) DeleteUser(c echo.Context) error {
 	//Deleting user
-	customMsg := "error bind data"
-	component := "[UserController.DeleteUser]"
+	customMsg := message.MsgResponseBindDataError
+	component := message.MsgComponentDeleteUserController
 	id, err := strconv.Atoi(c.Param("user_id"))
 	if err != nil {
 		return uc.handleError(c, component, customMsg, err)
@@ -102,8 +103,8 @@ func (uc *userController) DeleteUser(c echo.Context) error {
 	user_id := int64(id)
 	pgUser, err := uc.userModel.DeleteUser(user_id)
 	if err != nil {
-		customMsg = "error to delete data in Postgres DB"
-		component = "[UserModel.DeleteUser]"
+		customMsg = message.MsgResponseDeleteDataPgDatabaseError
+		component = message.MsgComponentDeleteUserModel
 		return uc.handleError(c, component, customMsg, err)
 	}
 	return utils.HandleSuccess(c, pgUser)

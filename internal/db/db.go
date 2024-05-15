@@ -4,8 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-
-	c "integra_backend/internal/constant"
+	"integra_backend/internal/message"
 
 	_ "github.com/lib/pq"
 )
@@ -19,11 +18,11 @@ type DbConnection interface {
 	CloseConnection() error
 }
 
-func NewDbConnection() (DbConnection, error) {
-	psqlconn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", c.Host, c.Port, c.User, c.Password, c.Dbname)
+func NewDbConnection(host string, port int, user string, pwd string, dbname string) (DbConnection, error) {
+	psqlconn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, pwd, dbname)
 	conn, err := sql.Open("postgres", psqlconn)
 	if err != nil {
-		return nil, errors.New("error connecting to Postgres DB")
+		return nil, errors.New(message.MsgConnectingPgDatabaseError)
 	}
 	return &dbConnection{conn: conn}, nil
 }
