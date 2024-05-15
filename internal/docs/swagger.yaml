@@ -1,0 +1,123 @@
+definitions:
+  entity.UserEntity:
+    properties:
+      department:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      user_id:
+        type: integer
+      user_name:
+        type: string
+      user_status:
+        type: string
+    required:
+    - department
+    - email
+    - first_name
+    - last_name
+    - user_name
+    type: object
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample CRUD Users API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Example CRUD Users API
+  version: "1.0"
+paths:
+  /delete_user/{user_id}:
+    delete:
+      description: Deletes an existing user.
+      parameters:
+      - description: USER ID
+        in: path
+        name: user_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: deletes an existing user
+      tags:
+      - User
+  /update_user/{user_id}:
+    post:
+      consumes:
+      - application/json
+      description: Updates an existing user.
+      parameters:
+      - description: USER ID
+        in: path
+        name: user_id
+        required: true
+        type: integer
+      - description: ENTRY PAYLOAD
+        in: body
+        name: parameters
+        required: true
+        schema:
+          $ref: '#/definitions/entity.UserEntity'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: updates an existing user
+      tags:
+      - User
+  /user:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user.
+      parameters:
+      - description: ENTRY PAYLOAD
+        in: body
+        name: parameters
+        required: true
+        schema:
+          $ref: '#/definitions/entity.UserEntity'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: create a new user
+      tags:
+      - User
+  /users:
+    get:
+      description: List users.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: List users
+      tags:
+      - List Users
+swagger: "2.0"
