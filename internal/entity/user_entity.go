@@ -7,5 +7,5 @@ type UserEntity struct {
 	LastName   string `json:"last_name" validate:"required"`
 	Email      string `json:"email" validate:"required,email"`
 	UserStatus string `json:"user_status"`
-	Department string `json:"department" validate:"required"`
+	Department string `json:"department"`
 }
