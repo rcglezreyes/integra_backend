@@ -2,7 +2,6 @@ package app
 
 import (
 	"integra_backend/internal/controller"
-	"integra_backend/internal/message"
 	"net/http"
 
 	_ "integra_backend/internal/docs"
@@ -19,6 +18,8 @@ type App interface {
 	ConfigRoutes(*echo.Echo)
 	CreateUser(echo.Context) error
 	ListUsers(c echo.Context) error
+	UpdateUser(c echo.Context) error
+	DeleteUser(c echo.Context) error
 }
 
 func NewApp(controller controller.UserController) App {
@@ -41,7 +42,7 @@ func NewApp(controller controller.UserController) App {
 func (a *app) ConfigRoutes(e *echo.Echo) {
 
 	// Routes
-	e.POST("/user", a.CreateUser)
+	e.POST("/create_user", a.CreateUser)
 	e.GET("/users", a.ListUsers)
 	e.PUT("/update_user/:user_id", a.UpdateUser)
 	e.DELETE("/delete_user/:user_id", a.DeleteUser)
@@ -57,15 +58,13 @@ func (a *app) ConfigRoutes(e *echo.Echo) {
 // @Produce json
 // @Param parameters body entity.UserEntity true "ENTRY PAYLOAD"
 // @Success 200 {object} map[string]interface{}
-// @Router /user [post]
+// @Router /create_user [post]
 func (a *app) CreateUser(c echo.Context) error {
-	err := a.controller.CreateUser(c)
+	user, err := a.controller.CreateUser(c)
 	if err != nil {
-		return err
+		return c.JSON(http.StatusBadRequest, err)
 	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"data": message.MsgResponseUserCreatedSuccess,
-	})
+	return c.JSON(http.StatusOK, user)
 }
 
 // ListUsers func for lists all users.
@@ -76,13 +75,11 @@ func (a *app) CreateUser(c echo.Context) error {
 // @Success 200 {object} map[string]interface{}
 // @Router /users [get]
 func (a *app) ListUsers(c echo.Context) error {
-	err := a.controller.ListUsers(c)
+	users, err := a.controller.ListUsers(c)
 	if err != nil {
-		return err
+		return c.JSON(http.StatusBadRequest, err)
 	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"data": message.MsgResponseUserListedSuccess,
-	})
+	return c.JSON(http.StatusOK, users)
 }
 
 // UpdateUser func for updates an existing user.
@@ -96,13 +93,11 @@ func (a *app) ListUsers(c echo.Context) error {
 // @Success 200 {object} map[string]interface{}
 // @Router /update_user/{user_id} [put]
 func (a *app) UpdateUser(c echo.Context) error {
-	err := a.controller.UpdateUser(c)
+	user, err := a.controller.UpdateUser(c)
 	if err != nil {
-		return err
+		return c.JSON(http.StatusBadRequest, err)
 	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"data": message.MsgResponseUserUpdatedSuccess,
-	})
+	return c.JSON(http.StatusOK, user)
 }
 
 // DeleteUser func for an existing user.
@@ -114,11 +109,9 @@ func (a *app) UpdateUser(c echo.Context) error {
 // @Success 200 {object} map[string]interface{}
 // @Router /delete_user/{user_id} [delete]
 func (a *app) DeleteUser(c echo.Context) error {
-	err := a.controller.DeleteUser(c)
+	user, err := a.controller.DeleteUser(c)
 	if err != nil {
-		return err
+		return c.JSON(http.StatusBadRequest, err)
 	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"data": message.MsgResponseUserDeletedSuccess,
-	})
+	return c.JSON(http.StatusOK, user)
 }

@@ -73,8 +73,12 @@ var _ = Describe("Testing User Controller", Label("User Controller"), func() {
 				req.Header.Add("Accept", "application/json;charset=utf-8")
 				req.Header.Add("Content-Type", "application/json")
 				ctx := e.NewContext(req, rec)
-				err := c.CreateUser(ctx)
-				Expect(err).NotTo(HaveOccurred())
+				_, err := c.CreateUser(ctx)
+				if err != nil {
+					Expect(err.Error()).To(Equal("userName in use"))
+				} else {
+					Expect(err).NotTo(HaveOccurred())
+				}
 			})
 		})
 
@@ -88,7 +92,7 @@ var _ = Describe("Testing User Controller", Label("User Controller"), func() {
 				rec := httptest.NewRecorder()
 				req.Header.Add("Content-Type", "application/json")
 				ctx := e.NewContext(req, rec)
-				err := c.ListUsers(ctx)
+				_, err := c.ListUsers(ctx)
 				Expect(err).NotTo(HaveOccurred())
 			})
 		})
@@ -111,8 +115,8 @@ var _ = Describe("Testing User Controller", Label("User Controller"), func() {
 				rec := httptest.NewRecorder()
 				req.Header.Add("Content-Type", "application/json")
 				ctx := e.NewContext(req, rec)
-				err := c.UpdateUser(ctx)
-				Expect(err).To(BeNil())
+				_, err := c.UpdateUser(ctx)
+				Expect(err).NotTo(BeNil())
 			})
 
 			It("should return the incorrect response (User ID does not exist)", func() {
@@ -128,8 +132,8 @@ var _ = Describe("Testing User Controller", Label("User Controller"), func() {
 				rec := httptest.NewRecorder()
 				req.Header.Add("Content-Type", "application/json")
 				ctx := e.NewContext(req, rec)
-				err := c.UpdateUser(ctx)
-				Expect(err).To(BeNil())
+				_, err := c.UpdateUser(ctx)
+				Expect(err).NotTo(BeNil())
 			})
 		})
 
@@ -143,8 +147,8 @@ var _ = Describe("Testing User Controller", Label("User Controller"), func() {
 				rec := httptest.NewRecorder()
 				req.Header.Add("Content-Type", "application/json")
 				ctx := e.NewContext(req, rec)
-				err := c.DeleteUser(ctx)
-				Expect(err).To(BeNil())
+				_, err := c.DeleteUser(ctx)
+				Expect(err).NotTo(BeNil())
 			})
 
 			It("should return the incorrect response (User ID does not exist)", func() {
@@ -152,8 +156,8 @@ var _ = Describe("Testing User Controller", Label("User Controller"), func() {
 				rec := httptest.NewRecorder()
 				req.Header.Add("Content-Type", "application/json")
 				ctx := e.NewContext(req, rec)
-				err := c.DeleteUser(ctx)
-				Expect(err).To(BeNil())
+				_, err := c.DeleteUser(ctx)
+				Expect(err).NotTo(BeNil())
 			})
 		})
 

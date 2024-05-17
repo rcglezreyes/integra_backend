@@ -35,6 +35,29 @@ info:
   title: Swagger Example CRUD Users API
   version: "1.0"
 paths:
+  /create_user:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user.
+      parameters:
+      - description: ENTRY PAYLOAD
+        in: body
+        name: parameters
+        required: true
+        schema:
+          $ref: '#/definitions/entity.UserEntity'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: create a new user
+      tags:
+      - User
   /delete_user/{user_id}:
     delete:
       description: Deletes an existing user.
@@ -81,29 +104,6 @@ paths:
             additionalProperties: true
             type: object
       summary: updates an existing user
-      tags:
-      - User
-  /user:
-    post:
-      consumes:
-      - application/json
-      description: Create a new user.
-      parameters:
-      - description: ENTRY PAYLOAD
-        in: body
-        name: parameters
-        required: true
-        schema:
-          $ref: '#/definitions/entity.UserEntity'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            additionalProperties: true
-            type: object
-      summary: create a new user
       tags:
       - User
   /users:
