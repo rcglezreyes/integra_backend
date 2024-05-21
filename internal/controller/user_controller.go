@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"errors"
 	"fmt"
 	"integra_backend/internal/entity"
 	"integra_backend/internal/message"
@@ -114,5 +115,5 @@ func (uc *userController) handleError(component string, customMsg string, err er
 	fmt.Println()
 	msg := fmt.Sprintf("%v %v %v \n", component, customMsg, err.Error())
 	fmt.Println(msg)
-	return err
+	return errors.New(err.Error())
 }

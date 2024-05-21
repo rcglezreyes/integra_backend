@@ -2,6 +2,7 @@ package app
 
 import (
 	"integra_backend/internal/controller"
+	"integra_backend/internal/entity"
 	"net/http"
 
 	_ "integra_backend/internal/docs"
@@ -62,7 +63,10 @@ func (a *app) ConfigRoutes(e *echo.Echo) {
 func (a *app) CreateUser(c echo.Context) error {
 	user, err := a.controller.CreateUser(c)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err)
+		return c.JSON(http.StatusBadRequest, entity.ResponseGeneric{
+			Status:  "Failed (Create)",
+			Message: err.Error(),
+		})
 	}
 	return c.JSON(http.StatusOK, user)
 }
@@ -77,7 +81,10 @@ func (a *app) CreateUser(c echo.Context) error {
 func (a *app) ListUsers(c echo.Context) error {
 	users, err := a.controller.ListUsers(c)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err)
+		return c.JSON(http.StatusBadRequest, entity.ResponseGeneric{
+			Status:  "Failed (List)",
+			Message: err.Error(),
+		})
 	}
 	return c.JSON(http.StatusOK, users)
 }
@@ -95,7 +102,10 @@ func (a *app) ListUsers(c echo.Context) error {
 func (a *app) UpdateUser(c echo.Context) error {
 	user, err := a.controller.UpdateUser(c)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err)
+		return c.JSON(http.StatusBadRequest, entity.ResponseGeneric{
+			Status:  "Failed (Update)",
+			Message: err.Error(),
+		})
 	}
 	return c.JSON(http.StatusOK, user)
 }
@@ -111,7 +121,10 @@ func (a *app) UpdateUser(c echo.Context) error {
 func (a *app) DeleteUser(c echo.Context) error {
 	user, err := a.controller.DeleteUser(c)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, err)
+		return c.JSON(http.StatusBadRequest, entity.ResponseGeneric{
+			Status:  "Failed (Delete)",
+			Message: err.Error(),
+		})
 	}
 	return c.JSON(http.StatusOK, user)
 }
